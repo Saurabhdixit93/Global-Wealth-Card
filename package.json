@@ -1,0 +1,38 @@
+{
+  "name": "global-wealth-card",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "typecheck": "tsc -b tsconfig.build.json --noEmit false --emitDeclarationOnly false --dry 2>/dev/null || tsc -b tsconfig.build.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:migrate": "tsx --env-file=.env scripts/migrate.ts",
+    "db:reset": "tsx --env-file=.env scripts/migrate.ts --reset",
+    "db:seed": "tsx --env-file=.env scripts/seed.ts",
+    "dev:api": "tsx --env-file=.env watch apps/api/src/main.ts",
+    "start:api": "tsx --env-file=.env apps/api/src/main.ts",
+    "dev:web": "pnpm --filter @wealthcard/web dev",
+    "build:web": "pnpm --filter @wealthcard/web build",
+    "simulate": "tsx --env-file=.env apps/simulator/src/main.ts",
+    "demo": "tsx --env-file=.env scripts/demo.ts",
+    "bootstrap": "pnpm db:reset && pnpm db:seed",
+    "build:vercel": "pnpm --filter @wealthcard/web build",
+    "start": "node apps/api/dist/main.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/pg": "^8.11.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "pg": "^8.23.0"
+  }
+}
