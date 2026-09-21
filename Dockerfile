@@ -26,10 +26,7 @@ COPY apps/api/ apps/api/
 
 RUN pnpm exec tsc -b tsconfig.build.json
 
-# Drop devDependencies from the tree that ships. The runtime needs no
-# TypeScript loader: migrations compile to dist alongside the server.
-# CI=true keeps pnpm from prompting, which would hang a non-interactive build.
-RUN CI=true pnpm prune --prod
+
 
 # --- run --------------------------------------------------------------------
 FROM node:22-slim AS run
