@@ -17,13 +17,18 @@ pg.types.setTypeParser(20, (v) => v);     // int8
 
 export type Db = pg.Pool | pg.PoolClient;
 
-export const createPool = (connectionString: string): pg.Pool =>
-  new pg.Pool({
+export const createPool = (connectionString: string): pg.Pool => {
+  const pool = new pg.Pool({
     connectionString,
     max: Number(process.env.PG_POOL_MAX ?? 10),
     idleTimeoutMillis: 30_000,
-    connectionTimeoutMillis: 5_000,
+    connectionTimeoutMillis: 10_000,
   });
+  pool.on('error', (err) => {
+    console.warn('[db] Unexpected idle client error:', err.message);
+  });
+  return pool;
+};
 
 export const query = async <T extends pg.QueryResultRow = pg.QueryResultRow>(
   db: Db, sql: string, params: readonly unknown[] = [],

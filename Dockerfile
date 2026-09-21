@@ -40,7 +40,7 @@ COPY --from=build /app/apps/api apps/api/
 COPY db/ db/
 
 # Never run as root.
-RUN useradd --system --uid 10001 wealth && chown -R wealth:wealth /app
+RUN useradd --uid 10001 --no-create-home wealth && chown -R wealth:wealth /app
 USER wealth
 
 EXPOSE 4000
